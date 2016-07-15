@@ -3,7 +3,7 @@ def load_file():
     global b
     g = open('blocklist.txt')
     list = g.readlines()
-    for n in range(list.index(list[-1]) + 1):
+    for n in range(len(list)):
         for i in [' ', '\n', '\r']:
             list[n] = list[n].replace(i, '')
     b = []
@@ -11,7 +11,7 @@ def load_file():
         if m.isalpha() == 1:
             f = ['']
             for c in m:
-                for d in range(f.index(f[-1]) + 1):
+                for d in range(len(f)):
                     f.append(f[d] + c.upper())
                     f[d] += c
             b += f
