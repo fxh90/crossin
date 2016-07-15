@@ -8,7 +8,13 @@ def block(a):
         for i in [' ','\n','\r']:
             list[n] = list[n].replace(i,'')
     for m in list:
-        a = a.replace(m,'*' * len(m.decode('utf-8')))
+        b = ['']
+        for c in m:
+            for d in range(b.index(b[-1])+1):
+                b.append(b[d] + c.upper())
+                b[d] += c
+        for e in b:
+            a = a.replace(e,'*' * len(m.decode('utf-8')))
     return a
 load_file()
 while True:
