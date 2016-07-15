@@ -7,9 +7,7 @@ def load_file():
         for i in [' ', '\n', '\r']:
             list[n] = list[n].replace(i, '')
     b = []
-    print list
     for m in list:
-        print m.isalpha()
         if m.isalpha() == 1:
             f = ['']
             for c in m:
@@ -19,7 +17,6 @@ def load_file():
             b += f
         else:
             b.append(m)
-    print b
 
 
 def block(a):
