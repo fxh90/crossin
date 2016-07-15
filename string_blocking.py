@@ -18,7 +18,7 @@ def load_file():
                     f[d] += c
             b += f
         else:
-            b += m.isalpha()
+            b.append(m)
     print b
 
 
