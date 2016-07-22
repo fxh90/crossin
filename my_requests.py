@@ -38,8 +38,8 @@ def load_page(pagenum):
     data = a.content
     soup = BeautifulSoup.BeautifulSoup(data)
     lst = [i.get('href') for i in soup.findAll('a', {'class': 'view_img_link'})]
-    if not os.path.exists('jianbing'):
-        os.mkdir('jianbing')
+    if not os.path.exists('jiandan'):
+        os.mkdir('jiandan')
     for i in range(len(lst)):
         get_img(pagenum, i, lst[i])
     print 'Page %d finished' % pagenum, time.time() - time3
@@ -49,7 +49,7 @@ def load_page(pagenum):
 
 
 def get_img(pagenum, i, url):
-    f = open('jianbing/%d_%d.jpg' % (pagenum, i + 1), 'w')
+    f = open('jiandan/%d_%d.jpg' % (pagenum, i + 1), 'w')
     data = requests.get(url).content
     f.write(data)
     f.close()
@@ -81,11 +81,11 @@ for i in xrange(start_page, end_page + 1):
     print '\nGetting Page %d' % i
     if i != start_page:
         time_left = float(time.time() - time2) / (i - start_page) * (end_page - i + 1)
-        print 'Expected finished time:' + time.strftime('%H:%M:%S', time.localtime(time.time() + time_left))
+        print 'Expected time of finish:' + time.strftime('%H:%M:%S', time.localtime(time.time() + time_left))
     active += 1
     thread.start_new_thread(load_page, (i,))
     print 'active', active
-    while active > 5:
+    while active > 99:
         pass
 while active != 0:
     pass
