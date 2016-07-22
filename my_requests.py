@@ -3,9 +3,6 @@ import requests, BeautifulSoup, thread, time, os, random
 
 def get_totalpage():
     global headers
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.%d.90 Safari/537.36" % (
-            random.randint(2300, 2400))}
     url = 'http://jandan.net/ooxx'
     a = requests.get(url, headers=headers)
     counter = 0
@@ -40,8 +37,8 @@ def load_page(pagenum):
     data = a.content
     soup = BeautifulSoup.BeautifulSoup(data)
     lst = [i.get('href') for i in soup.findAll('a', {'class': 'view_img_link'})]
-    if not os.path.exists('/users/su/pic/jianbing'):
-        os.mkdir('/users/su/pic/jianbing')
+    if not os.path.exists('jianbing'):
+        os.mkdir('jianbing')
     for i in range(len(lst)):
         get_img(pagenum, i, lst[i])
     print 'Page %d finished' % pagenum, time.time() - time3
@@ -51,24 +48,35 @@ def load_page(pagenum):
 
 
 def get_img(pagenum, i, url):
-    f = open('/users/su/pic/jianbing/%d_%d.jpg' % (pagenum, i + 1), 'w')
+    f = open('jianbing/%d_%d.jpg' % (pagenum, i + 1), 'w')
     data = requests.get(url).content
     f.write(data)
     f.close()
 
 
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.%d.90 Safari/537.36" % (
+        random.randint(2300, 2400))}
 time1 = time.time()
-totalpage = get_totalpage()
 time2 = time.time()
-start_page = input('Start page:')
-print 'total page = %d' % totalpage, time2 - time1
+start_page = raw_input('Start page(optional):')
+end_page = raw_input('End page(optional):')
+if not start_page:
+    start_page = 1
+else:
+    start_page = int(start_page)
+if not end_page:
+    end_page = get_totalpage()
+    print 'total page = %d' % end_page, time2 - time1
+else:
+    end_page = int(end_page)
 finished = 0
 active = 0
 failed = []
-for i in xrange(start_page, totalpage + 1):
+for i in xrange(start_page, end_page + 1):
     print '\nGetting Page %d' % i
     if i != start_page:
-        time_left = float(time.time() - time2) / (i - start_page) * (totalpage - i + 1)
+        time_left = float(time.time() - time2) / (i - start_page) * (end_page - i + 1)
         print 'Expected finished time:' + time.strftime('%H:%M:%S', time.localtime(time.time() + time_left))
     active += 1
     thread.start_new_thread(load_page, (i,))
@@ -77,4 +85,4 @@ for i in xrange(start_page, totalpage + 1):
         pass
 while active != 0:
     pass
-raw_input('All finished')
+raw_input('All finished! Press ENTER to exit\n')
