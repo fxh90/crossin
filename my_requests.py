@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import requests, BeautifulSoup, thread, time, os, random
 
 
@@ -59,6 +60,8 @@ headers = {
         random.randint(2300, 2400))}
 time1 = time.time()
 time2 = time.time()
+total_page = get_totalpage()
+print 'total page = %d' % total_page, time2 - time1
 start_page = raw_input('Start page(optional):')
 end_page = raw_input('End page(optional):')
 if not start_page:
@@ -66,10 +69,11 @@ if not start_page:
 else:
     start_page = int(start_page)
 if not end_page:
-    end_page = get_totalpage()
-    print 'total page = %d' % end_page, time2 - time1
+    end_page = total_page
 else:
     end_page = int(end_page)
+    if end_page > total_page:
+        end_page = total_page
 finished = 0
 active = 0
 failed = []
